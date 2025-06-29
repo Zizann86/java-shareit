@@ -5,6 +5,7 @@ import ru.practicum.shareit.item.dto.UpdateItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,10 @@ public class ItemMapper {
                 item.getId(),
                 item.getName(),
                 item.getDescription(),
-                item.getAvailable()
+                item.getAvailable(),
+                null,
+                null,
+                new ArrayList<>()
         );
     }
 

@@ -49,6 +49,24 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
+    /*@ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponse> handleForbiddenException(ForbiddenException e) {
+        log.error("ForbiddenException occurred", e);
+        List<String> errors = new ArrayList<>();
+        errors.add("Access denied: " + e.getMessage());
+        return createErrorResponse(errors, HttpStatus.FORBIDDEN);
+    }*/
+
+    @ExceptionHandler(ForbiddenException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiError bhandler(NotFoundException e) {
+        log.error("Объект не найден: {}", e.getMessage());
+        return ApiError.builder()
+                .errorCode(HttpStatus.FORBIDDEN.value())
+                .description(e.getMessage())
+                .build();
+    }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiError handler(Exception e) {
