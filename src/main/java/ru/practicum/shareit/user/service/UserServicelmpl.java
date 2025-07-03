@@ -26,14 +26,14 @@ public class UserServicelmpl implements UserService {
     public UserDto createUser(UserDto userDto) {
         validateEmailExists(userDto.getEmail());
         User user = fromDto(userDto);
-        user = userRepository.createUser(user);
+        user = userRepository.save(user);
         log.info("Пользователь создан: {}", user);
         return UserMapper.toDto(user);
     }
 
     @Override
     public UserDto getUser(Long userId) {
-        Optional<User> user = userRepository.getUser(userId);
+        Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             log.info("Пользователь с id:{} получен", userId);
             return UserMapper.toDto(user.get());
@@ -44,7 +44,7 @@ public class UserServicelmpl implements UserService {
 
     @Override
     public List<UserDto> getAllUsers() {
-        List<User> users = userRepository.getAllUsers();
+        List<User> users = userRepository.findAll();
         log.info("Пользователи получены");
         return UserMapper.toDto(users);
     }
@@ -54,7 +54,7 @@ public class UserServicelmpl implements UserService {
         User user = validateUserExist(userId);
         validateEmailExists(userDto.getEmail());
         updatefromDto(user, userDto);
-        userRepository.updateUser(user);
+        userRepository.save(user);
         log.info("Пользователь с id: {} успешно обновлен", userId);
         return toDto(user);
     }
@@ -62,18 +62,18 @@ public class UserServicelmpl implements UserService {
     @Override
     public void deleteUser(Long userId) {
         validateUserExist(userId);
-        userRepository.deleteUser(userId);
+        userRepository.deleteById(userId);
         log.info("Пользователь с id: {} успешно удален", userId);
     }
 
     @Override
     public User validateUserExist(Long userId) {
-        return userRepository.getUser(userId)
+        return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("Пользователь с id %d не найден.", userId)));
     }
 
     private void validateEmailExists(String email) {
-        List<String> emails = userRepository.getAllUsers().stream()
+        List<String> emails = userRepository.findAll().stream()
                 .map(User::getEmail)
                 .toList();
         if (emails.contains(email)) {
