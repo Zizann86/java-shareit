@@ -2,30 +2,23 @@ package ru.practicum.shareit.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidationExceptions(MethodArgumentNotValidException e) {
         log.error("Ошибка при валидации данных: {}", e.getMessage());
-
-        String errorMessage = e.getBindingResult().getAllErrors().stream()
-                .map(ObjectError::getDefaultMessage)
-                .collect(Collectors.joining(", "));
-
         return ApiError.builder()
+                .error("Validation error")
                 .errorCode(HttpStatus.BAD_REQUEST.value())
-                .description(errorMessage)
                 .build();
     }
 
@@ -48,14 +41,6 @@ public class GlobalExceptionHandler {
                 .description(e.getMessage())
                 .build();
     }
-
-    /*@ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<ErrorResponse> handleForbiddenException(ForbiddenException e) {
-        log.error("ForbiddenException occurred", e);
-        List<String> errors = new ArrayList<>();
-        errors.add("Access denied: " + e.getMessage());
-        return createErrorResponse(errors, HttpStatus.FORBIDDEN);
-    }*/
 
     @ExceptionHandler(ForbiddenException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)

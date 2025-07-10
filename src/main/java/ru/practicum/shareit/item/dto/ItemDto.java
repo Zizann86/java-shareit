@@ -21,6 +21,7 @@ public class ItemDto {
     private String description;
     @NotNull(message = "Статус не должен быть null или пуст")
     private Boolean available;
+    private Long requestId;
     BookingDto lastBooking;
     BookingDto nextBooking;
     List<CommentDto> comments;

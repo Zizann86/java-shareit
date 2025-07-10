@@ -8,4 +8,5 @@ import lombok.Data;
 public class ApiError {
     String description;
     Integer errorCode;
+    String error;
 }

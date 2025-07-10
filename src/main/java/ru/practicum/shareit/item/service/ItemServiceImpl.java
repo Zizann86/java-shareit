@@ -19,6 +19,8 @@ import ru.practicum.shareit.item.mapper.CommentMapper;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.dal.ItemRequestRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
@@ -38,15 +40,24 @@ public class ItemServiceImpl implements ItemService {
     private final UserService userService;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
+    private final ItemRequestRepository itemRequestRepository;
 
     @Override
     public ItemDto create(Long userId, ItemDto itemDto) {
         log.info("Создание вещи");
         User user = userService.validateUserExist(userId);
+        ItemRequest itemRequest = null;
+        if (itemDto.getRequestId() != null) {
+            itemRequest = itemRequestRepository.findById(itemDto.getRequestId())
+                    .orElseThrow(() -> new NotFoundException("Запрос с ID " + itemDto.getRequestId() + " не найден"));
+        }
         Item item = ItemMapper.toItem(itemDto, user);
+        item.setItemRequest(itemRequest);
         item = itemRepository.save(item);
         log.info("Предмет создан: {}", item);
-        return ItemMapper.toItemDto(item);
+        ItemDto result = ItemMapper.toItemDto(item);
+        getComments(result);
+        return result;
     }
 
     @Override
@@ -71,6 +82,22 @@ public class ItemServiceImpl implements ItemService {
             throw new NotFoundException("Предмет аренды не принадлежит данному пользователю");
         }
         toItemUpdate(item, itemDto);
+        if (itemDto.hasName()) {
+            item.setName(itemDto.getName());
+        }
+        if (itemDto.hasDescription()) {
+            item.setDescription(itemDto.getDescription());
+        }
+        if (itemDto.hasAvailable()) {
+            item.setAvailable(itemDto.getAvailable());
+        }
+        if (itemDto.hasRequestId()) {
+            ItemRequest itemRequest = itemRequestRepository.findById(itemDto.getRequestId())
+                    .orElseThrow(() -> new NotFoundException("Запрос с ID " + itemDto.getRequestId() + " не найден"));
+            item.setItemRequest(itemRequest);
+        } else {
+            item.setItemRequest(null);
+        }
         itemRepository.save(item);
         return toItemDto(item);
     }
