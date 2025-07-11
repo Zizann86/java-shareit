@@ -33,6 +33,9 @@ public class BookingServicelmpl implements BookingService {
     public BookingDto create(Long userId, CreateBookingDto createBookingDto) {
         User booker = validateUserExist(userId);
         Item item = validateItemExist(createBookingDto.getItemId());
+        if (item.getOwner().getId().equals(userId)) {
+            throw new NotFoundException("Нельзя забронировать свою собственную вещь");
+        }
         if (!item.getAvailable()) {
             throw new IllegalStateException("Данная вещь не доступна!");
         }
@@ -46,6 +49,9 @@ public class BookingServicelmpl implements BookingService {
     @Override
     public BookingDto updateStatusBooking(Long userId, Long bookingId, boolean approved) {
         Booking booking = validateBookingExist(bookingId);
+        if (booking.getStatus() != BookingStatus.WAITING) {
+            throw new IllegalStateException("Нельзя изменить статус уже подтвержденного или отклоненного бронирования");
+        }
         Item item = booking.getItem();
         if (!item.getOwner().getId().equals(userId)) {
             throw new ForbiddenException("Данная вещь не принадлежит этому пользователю");
