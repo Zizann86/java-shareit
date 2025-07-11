@@ -54,7 +54,6 @@ class ItemRequestServiceTest {
     private final ItemRequestDto expectedDto;
 
     public ItemRequestServiceTest() {
-        // Инициализация через сеттеры
         request = new ItemRequest();
         request.setId(requestId);
         request.setDescription("Need a drill");

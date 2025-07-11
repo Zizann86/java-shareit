@@ -7,7 +7,6 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,12 +21,4 @@ public class ItemRequestDto {
     private UserDto requester;
     private LocalDateTime created;
     private List<ItemDto> items;
-
-    public ItemRequestDto(Long id, String description, UserDto requester, LocalDateTime created) {
-        this.id = id;
-        this.description = description;
-        this.requester = requester != null ? requester : new UserDto(); // или null
-        this.created = created;
-        this.items = new ArrayList<>();
-    }
 }

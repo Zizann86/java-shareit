@@ -29,4 +29,10 @@ public class ItemRequest {
     private LocalDateTime createdTime;
     @OneToMany(mappedBy = "itemRequest")
     List<Item> items;
+
+    public ItemRequest(String description, User requester, LocalDateTime createdTime) {
+        this.description = description;
+        this.requester = requester;
+        this.createdTime = createdTime;
+    }
 }

@@ -95,59 +95,57 @@ public class ItemDtoJsonTest {
 
     @Test
     void testDeserialize() throws Exception {
-        String jsonString = """
-        {
-            "id": 1,
-            "name": "Test Item",
-            "description": "Test Description",
-            "available": true,
-            "requestId": 5,
-            "lastBooking": {
-                "id": 1,
-                "start": "2023-01-01T10:00:00",
-                "end": "2023-01-05T10:00:00",
-                "item": {
-                    "id": 1,
-                    "name": "Test Item",
-                    "description": "Test Description",
-                    "available": true,
-                    "requestId": 5
-                },
-                "booker": {
-                    "id": 2,
-                    "name": "Booker",
-                    "email": "booker@example.com"
-                },
-                "status": "APPROVED"
-            },
-            "nextBooking": {
-                "id": 2,
-                "start": "2023-02-01T10:00:00",
-                "end": "2023-02-05T10:00:00",
-                "item": {
-                    "id": 1,
-                    "name": "Test Item",
-                    "description": "Test Description",
-                    "available": true,
-                    "requestId": 5
-                },
-                "booker": {
-                    "id": 2,
-                    "name": "Booker",
-                    "email": "booker@example.com"
-                },
-                "status": "WAITING"
-            },
-            "comments": [
-                {
-                    "id": 1,
-                    "text": "Great item!",
-                    "authorName": "User1",
-                    "created": "2023-01-10T12:00:00"
-                }
-            ]
-        }
-        """;
+        String jsonString = "{"
+                + "\"id\": 1, "
+                + "\"name\": \"Test Item\", "
+                + "\"description\": \"Test Description\", "
+                + "\"available\": true, "
+                + "\"requestId\": 5, "
+                + "\"lastBooking\": {"
+                + "\"id\": 1, "
+                + "\"start\": \"2023-01-01T10:00:00\", "
+                + "\"end\": \"2023-01-05T10:00:00\", "
+                + "\"item\": {"
+                + "\"id\": 1, "
+                + "\"name\": \"Test Item\", "
+                + "\"description\": \"Test Description\", "
+                + "\"available\": true, "
+                + "\"requestId\": 5"
+                + "}, "
+                + "\"booker\": {"
+                + "\"id\": 2, "
+                + "\"name\": \"Booker\", "
+                + "\"email\": \"booker@example.com\""
+                + "}, "
+                + "\"status\": \"APPROVED\""
+                + "}, "
+                + "\"nextBooking\": {"
+                + "\"id\": 2, "
+                + "\"start\": \"2023-02-01T10:00:00\", "
+                + "\"end\": \"2023-02-05T10:00:00\", "
+                + "\"item\": {"
+                + "\"id\": 1, "
+                + "\"name\": \"Test Item\", "
+                + "\"description\": \"Test Description\", "
+                + "\"available\": true, "
+                + "\"requestId\": 5"
+                + "}, "
+                + "\"booker\": {"
+                + "\"id\": 2, "
+                + "\"name\": \"Booker\", "
+                + "\"email\": \"booker@example.com\""
+                + "}, "
+                + "\"status\": \"WAITING\""
+                + "}, "
+                + "\"comments\": ["
+                + "{"
+                + "\"id\": 1, "
+                + "\"text\": \"Great item!\", "
+                + "\"authorName\": \"User1\", "
+                + "\"created\": \"2023-01-10T12:00:00\""
+                + "}"
+                + "]"
+                + "}";
 
         ItemDto dto = json.parse(jsonString).getObject();
 

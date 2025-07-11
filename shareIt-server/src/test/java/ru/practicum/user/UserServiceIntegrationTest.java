@@ -35,13 +35,10 @@ public class UserServiceIntegrationTest {
 
     @Test
     void createUser_shouldSaveUserToDatabase() {
-        // Arrange
         UserDto userDto = new UserDto(null, "Ivan", "ivan@yandex.ru");
 
-        // Act
         UserDto result = userService.createUser(userDto);
 
-        // Assert
         assertNotNull(result.getId());
         assertEquals("Ivan", result.getName());
         assertEquals("ivan@yandex.ru", result.getEmail());
@@ -52,23 +49,18 @@ public class UserServiceIntegrationTest {
 
     @Test
     void createUser_shouldThrowWhenEmailExists() {
-        // Arrange
         userRepository.save(new User("Existing", "existing@mail.ru"));
         UserDto userDto = new UserDto(null, "New", "existing@mail.ru");
 
-        // Act & Assert
         assertThrows(DuplicateFieldException.class, () -> userService.createUser(userDto));
     }
 
     @Test
     void getUser_shouldReturnUser() {
-        // Arrange
         User savedUser = userRepository.save(new User("Petr", "petr@mail.ru"));
 
-        // Act
         UserDto result = userService.getUser(savedUser.getId());
 
-        // Assert
         assertEquals(savedUser.getId(), result.getId());
         assertEquals("Petr", result.getName());
         assertEquals("petr@mail.ru", result.getEmail());
@@ -76,20 +68,16 @@ public class UserServiceIntegrationTest {
 
     @Test
     void getUser_shouldThrowWhenUserNotFound() {
-        // Act & Assert
         assertThrows(NotFoundException.class, () -> userService.getUser(999L));
     }
 
     @Test
     void getAllUsers_shouldReturnAllUsers() {
-        // Arrange
         userRepository.save(new User("User1", "user1@test.ru"));
         userRepository.save(new User("User2", "user2@test.ru"));
 
-        // Act
         List<UserDto> result = userService.getAllUsers();
 
-        // Assert
         assertEquals(2, result.size());
         assertTrue(result.stream().anyMatch(u -> u.getName().equals("User1")));
         assertTrue(result.stream().anyMatch(u -> u.getName().equals("User2")));
@@ -97,14 +85,11 @@ public class UserServiceIntegrationTest {
 
     @Test
     void updateUser_shouldUpdateUserFields() {
-        // Arrange
         User savedUser = userRepository.save(new User("OldName", "old@email.ru"));
         UpdateUserDto updateDto = new UpdateUserDto(savedUser.getId(), "NewName", "new@email.ru");
 
-        // Act
         UserDto result = userService.updateUser(updateDto, savedUser.getId());
 
-        // Assert
         assertEquals("NewName", result.getName());
         assertEquals("new@email.ru", result.getEmail());
 
@@ -115,43 +100,34 @@ public class UserServiceIntegrationTest {
 
     @Test
     void updateUser_shouldThrowWhenEmailExists() {
-        // Arrange
         userRepository.save(new User("Existing", "existing@mail.ru"));
         User savedUser = userRepository.save(new User("OldName", "old@email.ru"));
         UpdateUserDto updateDto = new UpdateUserDto(savedUser.getId(), "NewName", "existing@mail.ru");
 
-        // Act & Assert
         assertThrows(DuplicateFieldException.class,
                 () -> userService.updateUser(updateDto, savedUser.getId()));
     }
 
     @Test
     void deleteUser_shouldRemoveUserFromDatabase() {
-        // Arrange
         User savedUser = userRepository.save(new User("ToDelete", "delete@me.ru"));
 
-        // Act
         userService.deleteUser(savedUser.getId());
 
-        // Assert
         assertFalse(userRepository.existsById(savedUser.getId()));
     }
 
     @Test
     void validateUserExist_shouldReturnUserWhenExists() {
-        // Arrange
         User savedUser = userRepository.save(new User("Valid", "valid@user.ru"));
 
-        // Act
         User result = userService.validateUserExist(savedUser.getId());
 
-        // Assert
         assertEquals(savedUser.getId(), result.getId());
     }
 
     @Test
     void validateUserExist_shouldThrowWhenUserNotExists() {
-        // Act & Assert
         assertThrows(NotFoundException.class, () -> userService.validateUserExist(999L));
     }
 }
