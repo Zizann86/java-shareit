@@ -1,5 +1,5 @@
 services:
-  gateway:
+  shareIt-gateway:
     build:
       context: ./shareIt-gateway
       dockerfile: Dockerfile
@@ -13,7 +13,7 @@ services:
     environment:
       - SHAREIT_SERVER_URL=http://server:9090
 
-  server:
+  shareIt-server:
     build:
       context: ./shareIt-server
       dockerfile: Dockerfile
