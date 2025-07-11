@@ -9,10 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class CreateBookingDto {
-    @NotNull
     Long itemId;
-    @NotNull
     LocalDateTime start;
-    @NotNull
     LocalDateTime end;
 }

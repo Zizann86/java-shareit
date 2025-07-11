@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.dto;
+package ru.practicum.user.dto;
 
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -7,6 +7,7 @@ import lombok.Data;
 public class UpdateUserDto {
     Long id;
     String name;
+    @Email(message = "Email неверный формат")
     String email;
 
     public boolean hasName() {
