@@ -15,7 +15,6 @@ import ru.practicum.item.dto.UpdateItemDto;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 @Component
 public class ItemClient extends BaseClient {

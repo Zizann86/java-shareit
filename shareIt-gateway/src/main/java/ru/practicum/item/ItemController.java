@@ -14,7 +14,7 @@ import ru.practicum.item.dto.UpdateItemDto;
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
-    ItemClient itemClient;
+    private final ItemClient itemClient;
 
     @PostMapping
     public ResponseEntity<Object> createItem(@Valid @RequestBody ItemDto itemDto,

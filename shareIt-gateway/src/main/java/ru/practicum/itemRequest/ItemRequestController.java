@@ -10,7 +10,7 @@ import ru.practicum.itemRequest.dto.CreateItemRequestDto;
 @RequestMapping(path = "/requests")
 @RequiredArgsConstructor
 public class ItemRequestController {
-    ItemRequestClient itemRequestClient;
+    private final ItemRequestClient itemRequestClient;
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestHeader("X-Sharer-User-Id") Long userId,
@@ -25,14 +25,14 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     public ResponseEntity<Object> getAllRequests(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                               @RequestParam(name = "from", defaultValue = "0") Integer from,
-                                               @RequestParam(name = "size", defaultValue = "50") Integer size) {
+                                                 @RequestParam(name = "from", defaultValue = "0") Integer from,
+                                                 @RequestParam(name = "size", defaultValue = "50") Integer size) {
         return itemRequestClient.findAll(userId, from, size);
     }
 
     @GetMapping("/{requestId}")
     public ResponseEntity<Object> getRequestById(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                         @PathVariable("requestId") Long requestId) {
+                                                 @PathVariable("requestId") Long requestId) {
         return itemRequestClient.findById(userId, requestId);
     }
 }

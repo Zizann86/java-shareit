@@ -1,8 +1,6 @@
 package ru.practicum.booking;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +16,7 @@ import ru.practicum.booking.dto.CreateBookingDto;
 @Slf4j
 @Validated
 public class BookingController {
-    BookingClient bookingClient;
+    private final BookingClient bookingClient;
 
     @PostMapping
     public ResponseEntity<Object> createBooking(
