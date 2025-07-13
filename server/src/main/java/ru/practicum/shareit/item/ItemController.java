@@ -12,9 +12,9 @@ import ru.practicum.shareit.item.service.ItemService;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-controllers.
- */
+import static ru.practicum.shareit.util.Constants.USER_ID_HEADER;
+
+
 @Slf4j
 @RestController
 @RequestMapping("/items")
@@ -24,7 +24,7 @@ public class ItemController {
 
     @PostMapping
     public ItemDto createItem(@Valid @RequestBody ItemDto itemDto,
-                              @RequestHeader("X-Sharer-User-Id") Long userId) {
+                              @RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Получен HTTP-запрос на добавление вещи: {}", itemDto);
         return itemService.create(userId, itemDto);
     }
@@ -32,7 +32,7 @@ public class ItemController {
     @PatchMapping("/{itemId}")
     public ItemDto updateItem(@Valid @RequestBody UpdateItemDto itemDto,
                               @PathVariable Long itemId,
-                              @RequestHeader("X-Sharer-User-Id") Long userId) {
+                              @RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Получен HTTP-запрос на обновление вещи: {}", itemDto);
         return itemService.update(itemId, userId, itemDto);
     }
@@ -44,7 +44,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getUserItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public List<ItemDto> getUserItems(@RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Получен HTTP-запрос на получение всех вещей у пользователя с id: {}", userId);
         return itemService.getAllOwnerItems(userId);
     }
@@ -56,7 +56,7 @@ public class ItemController {
     }
 
     @PostMapping("{itemId}/comment")
-    public CommentDto addComment(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public CommentDto addComment(@RequestHeader(USER_ID_HEADER) Long userId,
                                  @PathVariable("itemId") Long itemId,
                                  @Valid @RequestBody CreateCommentDto createCommentDto
     ) {

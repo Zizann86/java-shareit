@@ -9,6 +9,8 @@ import ru.practicum.item.dto.CreateCommentDto;
 import ru.practicum.item.dto.ItemDto;
 import ru.practicum.item.dto.UpdateItemDto;
 
+import static ru.practicum.util.Constants.USER_ID_HEADER;
+
 @Slf4j
 @RestController
 @RequestMapping("/items")
@@ -18,7 +20,7 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<Object> createItem(@Valid @RequestBody ItemDto itemDto,
-                              @RequestHeader("X-Sharer-User-Id") Long userId) {
+                              @RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Получен HTTP-запрос на добавление вещи: {}", itemDto);
         return itemClient.create(userId, itemDto);
     }
@@ -26,7 +28,7 @@ public class ItemController {
     @PatchMapping("/{itemId}")
     public ResponseEntity<Object> updateItem(@Valid @RequestBody UpdateItemDto itemDto,
                               @PathVariable Long itemId,
-                              @RequestHeader("X-Sharer-User-Id") Long userId) {
+                              @RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Получен HTTP-запрос на обновление вещи: {}", itemDto);
         return itemClient.update(itemId, userId, itemDto);
     }
@@ -38,7 +40,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getUserItems(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ResponseEntity<Object> getUserItems(@RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Получен HTTP-запрос на получение всех вещей у пользователя с id: {}", userId);
         return itemClient.getAllOwnerItems(userId);
     }
@@ -50,7 +52,7 @@ public class ItemController {
     }
 
     @PostMapping("{itemId}/comment")
-    public ResponseEntity<Object> addComment(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ResponseEntity<Object> addComment(@RequestHeader(USER_ID_HEADER) Long userId,
                                              @PathVariable("itemId") Long itemId,
                                              @Valid @RequestBody CreateCommentDto createCommentDto
     ) {

@@ -11,9 +11,9 @@ import ru.practicum.shareit.booking.service.BookingService;
 
 import java.util.List;
 
-/**
- * TODO Sprint add-bookings.
- */
+import static ru.practicum.shareit.util.Constants.USER_ID_HEADER;
+
+
 @RequiredArgsConstructor
 @Slf4j
 @RestController
@@ -23,14 +23,14 @@ public class BookingController {
 
     @PostMapping
     public BookingDto createBooking(
-            @RequestHeader("X-Sharer-User-Id") Long userId,
+            @RequestHeader(USER_ID_HEADER) Long userId,
             @RequestBody @Valid CreateBookingDto createBookingDto) {
         log.info("Получен HTTP-запрос на добавление бронирования: {}", createBookingDto);
         return bookingService.create(userId, createBookingDto);
     }
 
     @PatchMapping("/{bookingId}")
-    public BookingDto updateStatusBooking(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public BookingDto updateStatusBooking(@RequestHeader(USER_ID_HEADER) Long userId,
                                           @PathVariable("bookingId") Long bookingId,
                                           @RequestParam(name = "approved", required = true) Boolean approved) {
         log.info("Получен HTTP-запрос на обновление бронирования");
@@ -38,21 +38,21 @@ public class BookingController {
     }
 
     @GetMapping("/{bookingId}")
-    public BookingDto getBookingById(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public BookingDto getBookingById(@RequestHeader(USER_ID_HEADER) Long userId,
                                      @PathVariable("bookingId") Long bookingId) {
         log.info("Получен HTTP-запрос на получение бронирования по id: {}", bookingId);
         return bookingService.getBookingById(userId, bookingId);
     }
 
     @GetMapping
-    public List<BookingDto> getAllBookingsForBooker(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public List<BookingDto> getAllBookingsForBooker(@RequestHeader(USER_ID_HEADER) Long userId,
                                                     @RequestParam(defaultValue = "ALL") BookingState state) {
         log.info("Получен HTTP-запрос на получение всех броней у пользователя с id: {}", userId);
         return bookingService.getBookingsByState(userId, state);
     }
 
     @GetMapping("/owner")
-    public List<BookingDto> getAllBookingsForOwner(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public List<BookingDto> getAllBookingsForOwner(@RequestHeader(USER_ID_HEADER) Long userId,
                                                    @RequestParam(defaultValue = "ALL") BookingState state) {
         return bookingService.getBookingsForOwner(userId, state);
     }
