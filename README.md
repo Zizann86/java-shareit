@@ -67,6 +67,10 @@ c созданием многомодульного проекта и приме
 git clone https://github.com/Zizann86/java-shareit.git
 cd java-shareit
 ```
+Соберите проект
+```bash
+mvn clean package
+```
 
 Из корневой директории проекта выполните:
 ```bash
